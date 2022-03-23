@@ -1,5 +1,5 @@
 import axios from "axios";
-let ins = axios.create({
+let client = axios.create({
   baseURL: "http://localhost:8081",
   headers: {
     Accept: "application/json",
@@ -10,5 +10,8 @@ let ins = axios.create({
   },
 });
 //axios.defaults.withCredentials = true;
-
-export default ins;
+client.interceptors.request.use((config) => {
+  config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+  return config;
+});
+export default client;

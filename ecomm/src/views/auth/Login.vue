@@ -28,7 +28,7 @@
 
 <script>
 import axios from "../../http";
-import {store} from '../../store';
+import { store } from "../../store";
 
 export default {
   name: "Login",
@@ -82,10 +82,16 @@ export default {
             .post("http://localhost:8081/api/login", user)
             .then((res) => {
               console.log(res.data.token);
-              const user=res.data.user;
-              const token=res.data.token
-              store.login(user,token) 
-              this.$router.push("/products");
+              const user = res.data.user;
+              const token = res.data.token;
+
+              store.login(user, token);
+              console.log(user);
+              if (user.role_id == 1) {
+                this.$router.push("/dashboard");
+              } else {
+                this.$router.push("/products");
+              }
             })
             .catch((err) => {
               if ("email" in err.response.data.errors) {

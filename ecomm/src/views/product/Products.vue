@@ -64,7 +64,6 @@
           </el-card>
         </el-col>
       </el-row>
-  
     </el-main>
   </el-container>
 </template>
@@ -74,8 +73,9 @@
 
 
 <script >
-import axios from "../http";
-import { store } from "../store";
+import axios from "../../http";
+import { store } from "../../store";
+
 export default {
   name: "Products",
   data() {

@@ -20,13 +20,13 @@
       </el-col>
       <el-col class="menuC" :span="14">
         <el-menu class="menu el-menu-demo" mode="horizontal">
-          <el-menu-item index="1"
-            ><router-link to="/">Home</router-link></el-menu-item
-          >
-          <el-menu-item index="2"
+          <el-menu-item v-if="$can('read', 'Post')" index="1"
+            ><router-link to="/">Home</router-link>
+          </el-menu-item>
+          <el-menu-item v-if="!store.isAuth()" index="2"
             ><router-link to="/login">Login</router-link></el-menu-item
           >
-          <el-menu-item index="3"
+          <el-menu-item v-if="!store.isAuth()" index="3"
             ><router-link to="/register">Register</router-link></el-menu-item
           >
           <el-menu-item index="4"
@@ -35,7 +35,7 @@
           <el-menu-item index="5"
             ><router-link to="/product">Product</router-link></el-menu-item
           >
-          <el-menu-item @click="logout" index="6"> log out</el-menu-item>
+          <el-menu-item v-if="store.isAuth()" @click="logout" index="6">log out</el-menu-item>
         </el-menu>
       </el-col>
     </el-row>
