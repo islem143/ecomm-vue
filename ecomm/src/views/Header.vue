@@ -32,9 +32,7 @@
           <el-menu-item index="4"
             ><router-link to="/products">Products</router-link></el-menu-item
           >
-          <el-menu-item index="5"
-            ><router-link to="/product">Product</router-link></el-menu-item
-          >
+       
           <el-menu-item v-if="store.isAuth()" @click="logout" index="6"
             >log out</el-menu-item
           >
