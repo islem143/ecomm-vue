@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="header">
     <el-row class="container" justify="space-between">
       <el-col :span="4" class="logo">
         <span class="icon"
@@ -35,7 +35,9 @@
           <el-menu-item index="5"
             ><router-link to="/product">Product</router-link></el-menu-item
           >
-          <el-menu-item v-if="store.isAuth()" @click="logout" index="6">log out</el-menu-item>
+          <el-menu-item v-if="store.isAuth()" @click="logout" index="6"
+            >log out</el-menu-item
+          >
         </el-menu>
       </el-col>
     </el-row>
@@ -45,6 +47,7 @@
 <script>
 import axios from "../http";
 import { store } from "../store";
+
 export default {
   name: "Header",
   data() {

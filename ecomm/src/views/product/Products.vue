@@ -3,61 +3,20 @@
     <el-main>
       <h2>Products</h2>
       <el-row gutter="40">
-        <el-col :span="8">
+        <el-col v-for="product in products" :key="product.id" :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <img
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+              :src="'http://localhost:8081/' + product.img_url"
               class="image"
             />
             <div style="padding: 14px">
+              {{ product.name }}
               <div class="bottom">
-                <router-link :to="{ name: 'Product', params: { id: 1 } }"
+                <router-link :to="{ name: 'Product', params: { id: product.id } }"
                   ><el-button type="text" class="button"
                     >Detail</el-button
                   ></router-link
                 >
-                <el-button type="text" class="button">Add to cart</el-button>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="8">
-          <el-card :body-style="{ padding: '0px' }">
-            <img
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-              class="image"
-            />
-            <div style="padding: 14px">
-              <div class="bottom">
-                <el-button type="text" class="button">Detail</el-button>
-                <el-button type="text" class="button">Add to cart</el-button>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="8">
-          <el-card :body-style="{ padding: '0px' }">
-            <img
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-              class="image"
-            />
-            <div style="padding: 14px">
-              <div class="bottom">
-                <el-button type="text" class="button">Detail</el-button>
-                <el-button type="text" class="button">Add to cart</el-button>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="8">
-          <el-card :body-style="{ padding: '0px' }">
-            <img
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-              class="image"
-            />
-            <div style="padding: 14px">
-              <div class="bottom">
-                <el-button type="text" class="button">Detail</el-button>
                 <el-button type="text" class="button">Add to cart</el-button>
               </div>
             </div>
@@ -81,14 +40,20 @@ export default {
   data() {
     return {
       store,
+      products: [],
     };
+  },
+  created() {
+    axios.get("/api/products").then((res) => {
+      console.log(res);
+      this.products = res.data;
+    });
   },
   methods: {
     logout() {
       axios
         .post("/api/logout")
         .then((res) => {
-          console.log(res);
           store.logout();
         })
 
@@ -98,9 +63,23 @@ export default {
     },
   },
 };
-axios.get("/api/products").then((res) => {
-  console.log(res);
-});
+
+// axios
+//   .get("/api/images", {
+//     responseType: "arraybuffer",
+//   })
+//   .then((res) => {
+//     const url=window.URL.createObjectURL(new Blob([res.data]));
+//     const link=document.createElement('a');
+//     link.href=url;
+//     link.setAttribute('download',title);
+//     document.body.appendChild(link);
+//     link.click()
+//     console.log('qsd');
+//   })
+//   .catch((err) => {
+//     console.log(err.response);
+//   });
 </script>
 
 <style>

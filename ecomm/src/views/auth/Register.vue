@@ -118,7 +118,7 @@ export default {
           axios
             .post("http://localhost:8081/api/register", user)
             .then((res) => {
-              console.log(res);
+              
               this.$router.push("/login");
             })
             .catch((err) => {

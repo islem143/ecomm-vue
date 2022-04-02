@@ -86,7 +86,7 @@ export default {
               const token = res.data.token;
 
               store.login(user, token);
-              console.log(user);
+
               if (user.role_id == 1) {
                 this.$router.push("/dashboard");
               } else {

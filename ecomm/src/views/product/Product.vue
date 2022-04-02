@@ -1,19 +1,19 @@
 <template>
   <el-container>
     <el-main>
-      <h2>Product N {{$route.params.id}}</h2>
-      <el-row gutter="40" >
+      <h2>Product N {{ $route.params.id }}</h2>
+      <el-row gutter="40">
         <el-col :span="8">
           <img
             src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
             class="image"
           />
         </el-col>
-         <el-col :span="8">
-          <p>Product Name</p>
-           <p>Product Description</p>
-           <p>Product Price</p>
-           <el-button>Add to cart</el-button>
+        <el-col :span="8">
+          <p>{{ product.name }}</p>
+          <p>{{ product.description }}</p>
+          <p>{{ product.price }}$</p>
+          <el-button>Add to cart</el-button>
         </el-col>
       </el-row>
     </el-main>
@@ -26,13 +26,27 @@
 
 <script>
 import { ref } from "vue";
-
+import axios from "../../http";
 const currentDate = ref(new Date());
+export default {
+  name: "Product",
+  data() {
+    return {
+      product: { name: "", description: "", price: "" },
+    };
+  },
+  created() {
+    const id = this.$route.params.id;
+    axios.get("/api/products/" + id).then((res) => {
+      this.product = res.data;
+    });
+  },
+};
 </script>
 
 <style scoped>
-img{
-    border-radius:3px;
+img {
+  border-radius: 3px;
 }
 .el-container {
   display: block;

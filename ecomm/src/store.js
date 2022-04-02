@@ -1,11 +1,13 @@
 import { reactive } from "vue";
 
 export const store = reactive({
-  user: {},
+  user: localStorage.getItem("token")
+    ? JSON.parse(localStorage.getItem("user"))
+    : "",
   token: localStorage.getItem("token") ? localStorage.getItem("token") : "",
 
   isAuth() {
-    return !!this.token;
+    return !!this.token && this.user;
   },
   login(user, token) {
     this.user = user;
@@ -17,6 +19,6 @@ export const store = reactive({
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     this.token = "";
-    this.user = {};
+    this.user = null;
   },
 });

@@ -51,7 +51,7 @@
 
           <el-menu-item index="3-1">Orders</el-menu-item>
         </el-sub-menu>
-         <el-sub-menu index="4">
+        <el-sub-menu index="4">
           <template #title>
             <el-icon><location /></el-icon>
             <span>Delivery</span>
@@ -62,5 +62,15 @@
         </el-sub-menu>
       </el-menu>
     </el-col>
+    <el-col :span="12">
+      <router-view></router-view>
+    </el-col>
   </el-row>
 </template>
+
+<script>
+</script>
+
+<style scoped>
+
+</style>

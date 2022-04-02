@@ -5,6 +5,10 @@ import Home from "../views/Home.vue";
 import Products from "../views/product/Products.vue";
 import Product from "../views/product/Product.vue";
 import Dashboard from "../views/admin/Dashboard.vue";
+import AddProduct from "../views/admin/products/AddProduct.vue";
+
+import getRole from "../roles";
+import { store } from "../store";
 
 const routes = [
   {
@@ -36,6 +40,7 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
+    children: [{ path: "addproduct", component: AddProduct }],
   },
 ];
 
@@ -43,5 +48,15 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
+router.beforeEach((to, from) => {
+  if (
+    (getRole() == "Guest" || getRole() == "Client") &&
+    to.name == "Dashboard"
+  ) {
+    return { name: "Login" };
+  }
+  if (store.isAuth() && (to.name == "Login" || to.name == "Register")) {
+    return { name: "Home" };
+  }
+});
 export default router;
