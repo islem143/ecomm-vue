@@ -6,7 +6,7 @@ import Products from "../views/product/Products.vue";
 import Product from "../views/product/Product.vue";
 import Dashboard from "../views/admin/Dashboard.vue";
 import AddProduct from "../views/admin/products/AddProduct.vue";
-
+import ProductsD from "../views/admin/products/Products.vue";
 import getRole from "../roles";
 import { store } from "../store";
 
@@ -40,7 +40,16 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
-    children: [{ path: "addproduct", component: AddProduct }],
+    children: [
+      { name: "addProduct", path: "addproduct", component: AddProduct },
+      { name: "productsD", path: "products", component: ProductsD },
+      {
+        name: "productD",
+        path: "product/:id",
+        component: Product,
+        props: { edit: true },
+      },
+    ],
   },
 ];
 

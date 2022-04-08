@@ -19,14 +19,19 @@
         <p style="color: red; margin: 0">{{ passwordError }}</p>
       </el-form-item>
       <el-form-item label="image" prop="image">
-        <el-input id="image" name="image" v-model="info.image" type="file"></el-input>
+        <el-input
+          id="image"
+          name="image"
+          v-model="info.image"
+          type="file"
+        ></el-input>
         <p style="color: red; margin: 0">{{ passwordError }}</p>
       </el-form-item>
       <el-form-item label="Price" prop="price">
         <el-input v-model="info.price" type="number"></el-input>
         <p style="color: red; margin: 0">{{ passwordError }}</p>
       </el-form-item>
-       <el-form-item label="Quantity" prop="quantity">
+      <el-form-item label="Quantity" prop="quantity">
         <el-input v-model="info.quantity" type="number"></el-input>
         <p style="color: red; margin: 0">{{ passwordError }}</p>
       </el-form-item>
@@ -44,6 +49,7 @@ import { store } from "../../../store";
 
 export default {
   name: "Login",
+  props:['edit'],
   data() {
     return {
       store,
@@ -51,7 +57,7 @@ export default {
         name: "",
         description: "",
         price: 0.0,
-        quantity:0
+        quantity: 0,
       },
       rules: {
         name: [
@@ -81,7 +87,7 @@ export default {
             trigger: "blur",
           },
         ],
-         quantity: [
+        quantity: [
           {
             required: true,
             type: "string",
@@ -94,6 +100,22 @@ export default {
       passwordError: "",
       error: "",
     };
+  },
+  created() {
+     const edit=this.$route.params.edit;
+     console.log(this.$route);
+    if (edit) {
+      const id = this.$route.params.id;
+      axios
+        .get("/api/products/" + id)
+        .then((res) => {
+          console.log(res);
+          this.info.name=res.data.name;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
   methods: {
     clearErrors() {
@@ -109,22 +131,21 @@ export default {
       this.$refs[info]
         .validate()
         .then(() => {
-            let formData=new FormData();
-            let file=document.querySelector('#image');
-           
-            for(const key in product){
-          
-              formData.append(key,product[key]);
-            }
-             formData.append("image",file.files[0]);
-      
+          let formData = new FormData();
+          let file = document.querySelector("#image");
+
+          for (const key in product) {
+            formData.append(key, product[key]);
+          }
+          formData.append("image", file.files[0]);
+
           axios
             .post("http://localhost:8081/api/products", formData)
             .then((res) => {
-             console.log(res);
+              console.log(res);
             })
             .catch((err) => {
-             console.log(err.response);
+              console.log(err.response);
             });
         })
         .catch((err) => {

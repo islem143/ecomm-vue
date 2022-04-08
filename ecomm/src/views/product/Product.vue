@@ -5,7 +5,7 @@
       <el-row gutter="40">
         <el-col :span="8">
           <img
-            :src="'http://localhost:8081/'+product.img_url"
+            :src="'http://localhost:8081/' + product.img_url"
             class="image"
           />
         </el-col>
@@ -14,6 +14,12 @@
           <p>{{ product.description }}</p>
           <p>{{ product.price }}$</p>
           <el-button>Add to cart</el-button>
+          <router-link
+            v-if="$can('update', 'Product')"
+            :to="{ name: 'addProduct', params: { id:$route.params.id,edit: true } }"
+          >
+            <el-button>Edit</el-button>
+          </router-link>
         </el-col>
       </el-row>
     </el-main>
@@ -28,8 +34,10 @@
 import { ref } from "vue";
 import axios from "../../http";
 const currentDate = ref(new Date());
+
 export default {
   name: "Product",
+
   data() {
     return {
       product: { name: "", description: "", price: "" },

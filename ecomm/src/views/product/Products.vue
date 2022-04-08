@@ -12,12 +12,33 @@
             <div style="padding: 14px">
               {{ product.name }}
               <div class="bottom">
-                <router-link :to="{ name: 'Product', params: { id: product.id } }"
+                <router-link
+                  :to="{ name: 'Product', params: { id: product.id } }"
                   ><el-button type="text" class="button"
                     >Detail</el-button
                   ></router-link
                 >
-                <el-button type="text" class="button">Add to cart</el-button>
+                <div>
+                <el-button
+                  v-if="$can('create', 'Cart')"
+                  type="text"
+                  class="button"
+                  >Add to cart</el-button
+                >
+                <el-button
+                  v-if="$can('update', 'Product')"
+                  type="info"
+                  class="button"
+                  >Edit</el-button
+                >
+
+                <el-button
+                  v-if="$can('delete', 'Product')"
+                  type="danger"
+                  class="button"
+                  >Delete</el-button
+                >
+                </div>
               </div>
             </div>
           </el-card>

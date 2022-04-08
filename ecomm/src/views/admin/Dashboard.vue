@@ -30,8 +30,16 @@
             <span>Products</span>
           </template>
 
-          <el-menu-item index="1-1">Products</el-menu-item>
-          <el-menu-item index="1-2">Add Product</el-menu-item>
+          <el-menu-item index="1-1"
+            ><router-link :to="{ name: 'productsD' }"
+              >Products</router-link
+            ></el-menu-item
+          >
+          <el-menu-item index="1-2"
+            ><router-link :to="{ name: 'addProduct' }"
+              >Add Product</router-link
+            ></el-menu-item
+          >
         </el-sub-menu>
 
         <el-sub-menu index="2">
@@ -72,5 +80,4 @@
 </script>
 
 <style scoped>
-
 </style>

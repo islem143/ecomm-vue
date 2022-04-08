@@ -1,8 +1,11 @@
+
+
 const Roles = {
   1: "Admin",
   2: "Client",
   3: "Guest",
 };
+
 
 export default function getRole() {
   return localStorage.getItem("user")
