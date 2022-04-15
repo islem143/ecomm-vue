@@ -40,10 +40,11 @@
 import axios from "../../../http";
 export default {
   name: "UpdateProduct",
-  props: ["id"],
+  props: ["id", "editProductOnList"],
   data() {
     return {
       info: {
+ 
         name: "",
         description: "",
         price: 0.0,
@@ -52,11 +53,14 @@ export default {
     };
   },
   methods: {
+    
     handleEdit() {
+      let product = this.info;
       axios
-        .put("/api/products/"+this.id, this.info)
+        .put("/api/products/" + this.id, product)
         .then((res) => {
-          console.log(res);
+          product.id=this.id;
+          this.editProductOnList(product);
         })
         .catch((err) => {
           console.log(err.response);
@@ -67,7 +71,7 @@ export default {
     axios
       .get("/api/products/" + this.id)
       .then((res) => {
-        console.log(res);
+    
         this.info.name = res.data.name;
         this.info.description = res.data.description;
         this.info.price = res.data.price;

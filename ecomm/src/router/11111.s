@@ -9,36 +9,40 @@ import AddProduct from "../views/admin/products/AddProduct.vue";
 import ProductsD from "../views/admin/products/Products.vue";
 import getRole from "../roles";
 import { store } from "../store";
-import PublicLayout from "../components/ui/PublicLayout.vue";
-import AdminLayout from "../components/ui/AdminLayout.vue";
+
 const routes = [
   {
     path: "/",
-    name: "PublicLayout",
-    component: PublicLayout,
-    children: [
-      { path: "", name: "Home", component: Home },
-      { path: "login", component: Login, name: "Login" },
-      { path: "register", component: Register, name: "Register" },
-      {
-        path: "products",
-        name: "Products",
-        component: Products,
-      },
-      {
-        path: "product/:id",
-        name: "Product",
-        component: Product,
-      },
-    ],
+    
+    name: "Home",
+    component: Home,
   },
-
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register,
+  },
+  {
+    path: "/products",
+    name: "Products",
+    component: Products,
+  },
+  {
+    path: "/product/:id",
+    name: "Product",
+    component: Product,
+  },
   {
     path: "/dashboard",
-    name: "AdminLayout",
-    component: AdminLayout,
+    name: "Dashboard",
+    component: Dashboard,
     children: [
-      { name: "Dashboard", path: "", component: Dashboard },
+      { name: "addProduct", path: "addproduct", component: AddProduct },
       { name: "productsD", path: "products", component: ProductsD },
       {
         name: "productD",

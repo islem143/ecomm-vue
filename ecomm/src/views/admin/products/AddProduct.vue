@@ -1,45 +1,42 @@
 <template>
-  <el-container>
-    <h2>Add Product</h2>
+  <el-form
+    ref="info"
+    :model="info"
+    :rules="rules"
+    label-position="top"
+    label-width="120px"
+  >
     <el-alert v-if="error" :title="error" type="error" effect="dark" />
-    <el-form
-      ref="info"
-      :model="info"
-      :rules="rules"
-      label-position="top"
-      label-width="120px"
-    >
-      <el-form-item label="Name" prop="name">
-        <el-input v-model="info.name" type="text"></el-input>
-        <p style="color: red; margin: 0">{{ emailError }}</p>
-      </el-form-item>
+    <el-form-item label="Name" prop="name">
+      <el-input v-model="info.name" type="text"></el-input>
+      <p style="color: red; margin: 0">{{ emailError }}</p>
+    </el-form-item>
 
-      <el-form-item label="Description" prop="description">
-        <el-input v-model="info.description" type="text"></el-input>
-        <p style="color: red; margin: 0">{{ passwordError }}</p>
-      </el-form-item>
-      <el-form-item label="image" prop="image">
-        <el-input
-          id="image"
-          name="image"
-          v-model="info.image"
-          type="file"
-        ></el-input>
-        <p style="color: red; margin: 0">{{ passwordError }}</p>
-      </el-form-item>
-      <el-form-item label="Price" prop="price">
-        <el-input v-model="info.price" type="number"></el-input>
-        <p style="color: red; margin: 0">{{ passwordError }}</p>
-      </el-form-item>
-      <el-form-item label="Quantity" prop="quantity">
-        <el-input v-model="info.quantity" type="number"></el-input>
-        <p style="color: red; margin: 0">{{ passwordError }}</p>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="login('info')" type="primary">Submit</el-button>
-      </el-form-item>
-    </el-form>
-  </el-container>
+    <el-form-item label="Description" prop="description">
+      <el-input v-model="info.description" type="text"></el-input>
+      <p style="color: red; margin: 0">{{ passwordError }}</p>
+    </el-form-item>
+    <el-form-item label="image" prop="image">
+      <el-input
+        id="image"
+        name="image"
+        v-model="info.image"
+        type="file"
+      ></el-input>
+      <p style="color: red; margin: 0">{{ passwordError }}</p>
+    </el-form-item>
+    <el-form-item label="Price" prop="price">
+      <el-input v-model="info.price" type="number"></el-input>
+      <p style="color: red; margin: 0">{{ passwordError }}</p>
+    </el-form-item>
+    <el-form-item label="Quantity" prop="quantity">
+      <el-input v-model="info.quantity" type="number"></el-input>
+      <p style="color: red; margin: 0">{{ passwordError }}</p>
+    </el-form-item>
+    <el-form-item>
+      <el-button @click="addProduct('info')" type="primary">Submit</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 
@@ -48,8 +45,8 @@ import axios from "../../../http";
 import { store } from "../../../store";
 
 export default {
-  name: "Login",
-  props:['edit'],
+  name: "AddProduct",
+  props: ["addProductToList"],
   data() {
     return {
       store,
@@ -101,22 +98,7 @@ export default {
       error: "",
     };
   },
-  created() {
-     const edit=this.$route.params.edit;
-     console.log(this.$route);
-    if (edit) {
-      const id = this.$route.params.id;
-      axios
-        .get("/api/products/" + id)
-        .then((res) => {
-          console.log(res);
-          this.info.name=res.data.name;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  },
+
   methods: {
     clearErrors() {
       this.emailError = "";
@@ -124,7 +106,7 @@ export default {
       this.nameError = "";
     },
 
-    login(info) {
+    addProduct(info) {
       this.clearErrors();
       let product = this.info;
 
@@ -142,7 +124,9 @@ export default {
           axios
             .post("http://localhost:8081/api/products", formData)
             .then((res) => {
-              console.log(res);
+              product.id = res.data.id;
+
+              this.addProductToList(product);
             })
             .catch((err) => {
               console.log(err.response);
