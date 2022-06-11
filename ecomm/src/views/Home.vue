@@ -1,17 +1,23 @@
 <template>
   <el-container>
     <h2>Home</h2>
-    {{ user}}
+    {{ user }}
   </el-container>
 </template>
 
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   name: "Home",
   computed: {
-    ...mapState(["user"]),
+    ...mapState("auth", {
+      user: (state) => state.user,
+    }),
+  },
+  created() {
+    console.log(this.$store);
   },
 };
 </script>

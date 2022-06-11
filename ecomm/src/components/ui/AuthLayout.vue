@@ -10,9 +10,8 @@
 
 <script>
 import Header from "./Header.vue";
-
 export default {
-  name: "PublicLayout",
+  name: "AuthLayout",
   component: {
     Header,
   },

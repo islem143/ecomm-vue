@@ -5,7 +5,7 @@
       <el-row gutter="40">
         <el-col :span="8">
           <img
-            :src="'http://localhost:8081/' + product.img_url"
+            :src="'http://localhost:8081/storage/' + product.img_url"
             class="image"
           />
         </el-col>
@@ -13,13 +13,7 @@
           <p>{{ product.name }}</p>
           <p>{{ product.description }}</p>
           <p>{{ product.price }}$</p>
-          <el-button>Add to cart</el-button>
-          <router-link
-            v-if="$can('update', 'Product')"
-            :to="{ name: 'addProduct', params: { id:$route.params.id,edit: true } }"
-          >
-            <el-button>Edit</el-button>
-          </router-link>
+          <el-button @click="addToCart">Add to cart</el-button>
         </el-col>
       </el-row>
     </el-main>
@@ -33,6 +27,7 @@
 <script>
 import { ref } from "vue";
 import axios from "../../http";
+import store from "../../store/store";
 const currentDate = ref(new Date());
 
 export default {
@@ -40,13 +35,22 @@ export default {
 
   data() {
     return {
-      product: { name: "", description: "", price: "" },
+      store,
+      product: {},
     };
   },
+  methods: {
+    addToCart() {
+      //store.commit("cart/addProduct",this.product);
+      store.dispatch("cart/addCartItem", { productId: this.product.id });
+    },
+  },
+
   created() {
     const id = this.$route.params.id;
     axios.get("/api/products/" + id).then((res) => {
       this.product = res.data;
+      console.log(res);
     });
   },
 };

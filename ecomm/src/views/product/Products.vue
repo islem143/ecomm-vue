@@ -6,7 +6,7 @@
         <el-col v-for="product in products" :key="product.id" :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <img
-              :src="'http://localhost:8081/' + product.img_url"
+              :src="'http://localhost:8081/storage/' + product.img_url"
               class="image"
             />
             <div style="padding: 14px">
@@ -19,25 +19,20 @@
                   ></router-link
                 >
                 <div>
-                <el-button
-                  v-if="$can('create', 'Cart')"
-                  type="text"
-                  class="button"
-                  >Add to cart</el-button
-                >
-                <el-button
-                  v-if="$can('update', 'Product')"
-                  type="info"
-                  class="button"
-                  >Edit</el-button
-                >
-
-                <el-button
-                  v-if="$can('delete', 'Product')"
-                  type="danger"
-                  class="button"
-                  >Delete</el-button
-                >
+                  <el-button
+                    v-if="$can('create', 'Cart')"
+                    type="text"
+                    class="button"
+                    @click="addToCart(product)"
+                    >Add to cart</el-button
+                  >
+                  <el-button
+                    v-if="$can('create', 'Cart')"
+                    type="text"
+                    class="button"
+                    @click="removeFromCart(product)"
+                    >Delete</el-button
+                  >
                 </div>
               </div>
             </div>
@@ -54,7 +49,7 @@
 
 <script >
 import axios from "../../http";
-import { store } from "../../store";
+import store from "../../store/store";
 
 export default {
   name: "Products",
@@ -64,6 +59,7 @@ export default {
       products: [],
     };
   },
+
   created() {
     axios.get("/api/products").then((res) => {
       console.log(res);
@@ -71,16 +67,8 @@ export default {
     });
   },
   methods: {
-    logout() {
-      axios
-        .post("/api/logout")
-        .then((res) => {
-          store.logout();
-        })
-
-        .catch((err) => {
-          console.log(err);
-        });
+    addToCart(product) {
+      store.dispatch("cart/addCartItem", { productId: product.id });
     },
   },
 };

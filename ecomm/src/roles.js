@@ -1,14 +1,19 @@
+const RolesMap = {
+  1: "admin",
+  2: "deleveryman",
+  3: "client",
 
-
-const Roles = {
-  1: "Admin",
-  2: "Client",
-  3: "Guest",
 };
 
+export const ROLES = {
+  ADMIN: "admin",
+  DELEVEY_MAN: "deleveryman",
+  CLIENT: "client",
+  GUEST:"guest"
+};
 
-export default function getRole() {
+export function getRole() {
   return localStorage.getItem("user")
-    ? Roles[JSON.parse(localStorage.getItem("user")).role_id]
-    : Roles[3];
+    ? RolesMap[JSON.parse(localStorage.getItem("user")).role_id]
+    : RolesMap[3];
 }

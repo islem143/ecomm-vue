@@ -27,8 +27,7 @@
 
 
 <script>
-import axios from "../../http";
-import { store } from "../../store";
+import store from "../../store/store";
 
 export default {
   name: "Login",
@@ -61,6 +60,7 @@ export default {
       error: "",
     };
   },
+
   methods: {
     clearErrors() {
       this.emailError = "";
@@ -75,36 +75,22 @@ export default {
         password: this.info.password,
       };
 
-      this.$refs[info]
-        .validate()
-        .then(() => {
-          axios
-            .post("http://localhost:8081/api/login", user)
-            .then((res) => {
-              console.log(res.data.token);
-              const user = res.data.user;
-              const token = res.data.token;
-
-              store.login(user, token);
-
-              if (user.role_id == 1) {
-                this.$router.push("/dashboard");
-              } else {
-                this.$router.push("/products");
-              }
-            })
-            .catch((err) => {
-              if ("email" in err.response.data.errors) {
-                this.emailError = err.response.data.errors.email;
-              }
-              if ("password" in err.response.data.errors) {
-                this.passwordError = err.response.data.errors.password;
-              }
-            });
-        })
-        .catch((err) => {
-          return;
-        });
+      this.$refs[info].validate().then(() => {
+        store
+          .dispatch("auth/login", user)
+          .then((res) => {
+            if (res.data.user.role_id == 1) {
+              this.$router.push("/dashboard");
+            } else {
+              this.$router.push("/products");
+            }
+          })
+          .catch((err) => {
+            for (const key in err.errors) {
+              this[key + "Error"] = err.errors[key].toString();
+            }
+          });
+      });
     },
   },
 };

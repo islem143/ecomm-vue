@@ -1,5 +1,5 @@
 <template>
-    <div class="header">
+  <div class="header">
     <el-row class="container" justify="space-between">
       <el-col :span="4" class="logo">
         <span class="icon"
@@ -23,31 +23,60 @@
           <el-menu-item v-if="$can('read', 'Post')" index="1"
             ><router-link to="/">Home</router-link>
           </el-menu-item>
-          <el-menu-item v-if="!store.isAuth()" index="2"
-            ><router-link to="/login">Login</router-link></el-menu-item
+          <el-menu-item v-if="!isAuth" index="2"
+            ><router-link :to="{ name: 'Login' }"
+              >Login</router-link
+            ></el-menu-item
           >
-          <el-menu-item v-if="!store.isAuth()" index="3"
-            ><router-link to="/register">Register</router-link></el-menu-item
+          <el-menu-item v-if="!isAuth" index="3"
+            ><router-link :to="{ name: 'Register' }"
+              >Register</router-link
+            ></el-menu-item
           >
           <el-menu-item index="4"
             ><router-link to="/products">Products</router-link></el-menu-item
           >
-       
-          <el-menu-item v-if="store.isAuth()" @click="logout" index="6"
+          <el-menu-item index="5">
+            <el-badge :value="totalItems" class="item">
+              <router-link to="/cart">
+                <el-button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-shopping-cart"
+                  >
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path
+                      d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                    ></path>
+                  </svg> </el-button
+              ></router-link>
+            </el-badge>
+          </el-menu-item>
+
+          <el-menu-item v-if="isAuth" @click="logout" index="6"
             >log out</el-menu-item
           >
         </el-menu>
       </el-col>
     </el-row>
+    {{ isAuth }}
   </div>
-
 </template>
 
 
 
 <script>
-import axios from "../../http";
-import { store } from "../../store";
+import { mapGetters, mapMutations } from "vuex";
+import store from "../../store/store";
 
 export default {
   name: "Header",
@@ -56,18 +85,13 @@ export default {
       store,
     };
   },
+  computed: {
+    ...mapGetters("auth", ["isAuth"]),
+    ...mapGetters("cart", ["totalItems"]),
+  },
   methods: {
     logout() {
-      axios
-        .post("/api/logout")
-        .then((res) => {
-          store.logout();
-          this.$router.push("/login");
-        })
-
-        .catch((err) => {
-          console.log(err);
-        });
+      store.dispatch("auth/logout").then((res) => {});
     },
   },
 };

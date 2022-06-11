@@ -47,12 +47,14 @@
 
 <script>
 import axios from "../../http";
+import store from "../../store/store";
 
 export default {
   name: "Register",
 
   data() {
     return {
+      store,
       rules: {
         name: [
           {
@@ -115,21 +117,14 @@ export default {
           };
           this.clearErrors();
 
-          axios
-            .post("http://localhost:8081/api/register", user)
+          store
+            .dispatch("auth/register", user)
             .then((res) => {
-              
-              this.$router.push("/login");
+              this.$router.push("/");
             })
             .catch((err) => {
-              if (err.response.data.message) {
-                this.error = err.response.data.message;
-              }
-              if (err.response.data.errors.email) {
-                this.emailError = err.response.data.errors.email[0];
-              }
-              if (err.response.data.errors.password) {
-                this.passwordError = err.response.data.errors.password[0];
+              for (const key in err.errors) {
+                this[key + "Error"] = err.errors[key].toString();
               }
             });
         })
