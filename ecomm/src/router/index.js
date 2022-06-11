@@ -13,6 +13,7 @@ import PublicLayout from "../components/ui/PublicLayout.vue";
 import AdminLayout from "../components/ui/AdminLayout.vue";
 import AuthLayout from "../components/ui/AuthLayout.vue";
 import Cart from "../views/cart/Cart.vue";
+import Order from "../views/order/Order.vue";
 const routes = [
   {
     path: "/auth",
@@ -29,7 +30,7 @@ const routes = [
     path: "/",
     name: "PublicLayout",
     component: PublicLayout,
-    meta: { requireAuth: false, roles: [ROLES.CLIENT] },
+
     children: [
       { path: "", name: "Home", component: Home },
 
@@ -47,7 +48,13 @@ const routes = [
         path: "cart",
         name: "Cart",
         component: Cart,
-        meta: { requireAuth: true },
+        meta: { requireAuth: true, roles: [ROLES.CLIENT] },
+      },
+      {
+        path: "orders",
+        name: "Order",
+        component: Order,
+        meta: { requireAuth: true, roles: [ROLES.CLIENT] },
       },
     ],
   },

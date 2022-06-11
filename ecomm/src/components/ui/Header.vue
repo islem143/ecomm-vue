@@ -65,6 +65,9 @@
           <el-menu-item v-if="isAuth" @click="logout" index="6"
             >log out</el-menu-item
           >
+          <el-menu-item index="7"
+            ><router-link to="/orders">my orders</router-link></el-menu-item
+          >
         </el-menu>
       </el-col>
     </el-row>

@@ -4,14 +4,20 @@ const cartStore = {
   state: {
     cart: {
       products: [],
-      totalPrice: 0,
-      
     },
   },
   getters: {
-    totalItems(state){
+    totalItems(state) {
       return state.cart.products.length;
-    }
+    },
+    totalPrice(state) {
+      let prices = state.cart.products.map((p) => p.total);
+      console.log(prices);
+      let total = prices.reduce((start, p) => {
+        return start + p;
+      }, 0);
+      return total;
+    },
   },
   mutations: {
     setProducts(state, products) {
