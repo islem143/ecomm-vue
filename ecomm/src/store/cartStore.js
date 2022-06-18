@@ -99,7 +99,7 @@ const cartStore = {
       return await axios
         .post("/api/cart", product)
         .then((res) => {
-          console.log(res);
+          commit("addProduct",product)
 
           return res;
         })
