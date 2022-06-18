@@ -82,6 +82,7 @@ export default {
             if (res.data.user.role_id == 1) {
               this.$router.push("/dashboard");
             } else {
+              store.dispatch("cart/getCartItems");
               this.$router.push("/products");
             }
           })

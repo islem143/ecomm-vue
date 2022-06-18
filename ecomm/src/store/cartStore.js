@@ -64,6 +64,11 @@ const cartStore = {
         state.cart.products.splice(productIndex, 1);
       }
     },
+    clearCart(state){
+      state.cart={
+        products:[]
+      }
+    }
   },
 
   actions: {
@@ -97,7 +102,7 @@ const cartStore = {
     },
     async addCartItem({ commit }, product) {
       return await axios
-        .post("/api/cart", product)
+        .post("/api/cart", {productId:product.id})
         .then((res) => {
           commit("addProduct",product)
 

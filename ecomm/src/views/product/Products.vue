@@ -26,13 +26,7 @@
                     @click="addToCart(product)"
                     >Add to cart</el-button
                   >
-                  <el-button
-                    v-if="$can('create', 'Cart')"
-                    type="text"
-                    class="button"
-                    @click="removeFromCart(product)"
-                    >Delete</el-button
-                  >
+                
                 </div>
               </div>
             </div>
@@ -68,27 +62,11 @@ export default {
   },
   methods: {
     addToCart(product) {
-      store.dispatch("cart/addCartItem", { productId: product.id });
+      store.dispatch("cart/addCartItem", product);
     },
   },
 };
 
-// axios
-//   .get("/api/images", {
-//     responseType: "arraybuffer",
-//   })
-//   .then((res) => {
-//     const url=window.URL.createObjectURL(new Blob([res.data]));
-//     const link=document.createElement('a');
-//     link.href=url;
-//     link.setAttribute('download',title);
-//     document.body.appendChild(link);
-//     link.click()
-//     console.log('qsd');
-//   })
-//   .catch((err) => {
-//     console.log(err.response);
-//   });
 </script>
 
 <style>

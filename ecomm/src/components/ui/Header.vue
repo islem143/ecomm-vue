@@ -36,7 +36,7 @@
           <el-menu-item index="4"
             ><router-link to="/products">Products</router-link></el-menu-item
           >
-          <el-menu-item index="5">
+          <el-menu-item v-if="isAuth" index="5">
             <el-badge :value="totalItems" class="item">
               <router-link to="/cart">
                 <el-button>
@@ -65,7 +65,7 @@
           <el-menu-item v-if="isAuth" @click="logout" index="6"
             >log out</el-menu-item
           >
-          <el-menu-item index="7"
+          <el-menu-item index="7" v-if="isAuth"
             ><router-link to="/orders">my orders</router-link></el-menu-item
           >
         </el-menu>
@@ -94,7 +94,10 @@ export default {
   },
   methods: {
     logout() {
-      store.dispatch("auth/logout").then((res) => {});
+      store.dispatch("auth/logout").then((res) => {
+        store.commit("cart/clearCart");
+        this.$router.replace("/auth/login");
+      });
     },
   },
 };

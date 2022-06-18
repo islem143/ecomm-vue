@@ -1,13 +1,18 @@
 <template>
   <el-container>
-    Orders
-    <el-main>
-      <OrdersTable />
-      <p>
-        Total Amount:
-        <b>{{ totalPrice }} $</b>
-      </p>
-      <OrderForm />
+
+    <el-main class="grid">
+        <div>
+        <OrderForm />
+      </div>
+      <div>
+        <OrdersTable />
+        <p>
+          Total Amount:
+          <b>{{ totalPrice }} $</b>
+        </p>
+      </div>
+    
     </el-main>
   </el-container>
 </template>
@@ -85,6 +90,7 @@ export default {
 };
 </script>
 <style scoped>
+
 .dialog-footer {
   display: flex;
   justify-content: flex-end;
@@ -98,6 +104,11 @@ export default {
 }
 .addBtn {
   align-self: flex-end;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5%;
 }
 </style>
 
