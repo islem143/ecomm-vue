@@ -76,7 +76,7 @@ export default {
   methods: {
     addToCart(product) {
      console.log(product.id);
-      store.dispatch("cart/addCartItem", { productId: product.id });
+      store.dispatch("cart/addCartItem", product);
     },
   },
 };

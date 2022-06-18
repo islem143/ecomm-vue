@@ -10,9 +10,12 @@ const cartStore = {
     totalItems(state) {
       return state.cart.products.length;
     },
+    products(state){
+       return state.cart.products;
+    },
     totalPrice(state) {
       let prices = state.cart.products.map((p) => p.total);
-      console.log(prices);
+
       let total = prices.reduce((start, p) => {
         return start + p;
       }, 0);
@@ -20,6 +23,9 @@ const cartStore = {
     },
   },
   mutations: {
+    clearCart(state){
+     state.cart={products:[]}
+    },
     setProducts(state, products) {
       state.cart.products = products;
     },
@@ -40,7 +46,7 @@ const cartStore = {
       }
     },
     addProduct(state, product) {
-      console.log(product);
+   
       let productIndex = state.cart.products.findIndex(
         (p) => p.id == product.id
       );
@@ -98,10 +104,9 @@ const cartStore = {
     },
     async addCartItem({ commit }, product) {
       return await axios
-        .post("/api/cart", product)
+        .post("/api/cart", { productId: product.id })
         .then((res) => {
-          console.log(product);
-          commit("addProduct",product);
+          commit("addProduct", product);
 
           return res;
         })

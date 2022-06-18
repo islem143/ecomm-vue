@@ -3,8 +3,11 @@
   <Menubar :model="items">
 
       <template #end>
-         <i class="pi pi-shopping-cart " style="margin-right: 20px;font-size: 2rem"></i>
+        <router-link v-if="isAuth"  to="/cart">
+         <i   class="pi pi-shopping-cart " style="margin-right: 20px;font-size: 2rem"></i>
         <Badge :value="totalItems" />
+        </router-link>
+        
     </template>
      </Menubar>
  
@@ -52,7 +55,10 @@ export default {
         {
           label: "Logout",
           command: () => {
+            
             store.dispatch("auth/logout").then((res) => {});
+            store.commit("cart/clearCart");
+            this.$router.replace("/");
           },
           visible: () => this.isAuth,
         },
