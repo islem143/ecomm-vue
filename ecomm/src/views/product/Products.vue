@@ -1,49 +1,46 @@
 <template>
-  <el-container>
-    <el-main>
-      <h2>Products</h2>
-      <el-row gutter="40">
-        <el-col v-for="product in products" :key="product.id" :span="8">
-          <el-card :body-style="{ padding: '0px' }">
-            <img
-              :src="'http://localhost:8081/storage/' + product.img_url"
-              class="image"
-            />
-            <div style="padding: 14px">
-              {{ product.name }}
-              <div class="bottom">
-                <router-link
-                  :to="{ name: 'Product', params: { id: product.id } }"
-                  ><el-button type="text" class="button"
-                    >Detail</el-button
-                  ></router-link
-                >
-                <div>
-                  <el-button
-                    v-if="$can('create', 'Cart')"
-                    type="text"
-                    class="button"
-                    @click="addToCart(product)"
-                    >Add to cart</el-button
-                  >
-                  <el-button
-                    v-if="$can('create', 'Cart')"
-                    type="text"
-                    class="button"
-                    @click="removeFromCart(product)"
-                    >Delete</el-button
-                  >
+
+  <div class="card" style="margin-top:30px">
+      <h1>Products</h1>
+        <DataView :value="products" :layout="layout" :paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
+			<template #header>
+                
+                <div class="grid grid-nogutter">
+                    <div class="col-6" style="text-align: left">
+                        <Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Sort By Price" @change="onSortChange($event)"/>
+                    </div>
+                    <div class="col-6" style="text-align: right">
+                        <DataViewLayoutOptions v-model="layout" />
+                    </div>
                 </div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-    </el-main>
-  </el-container>
+			</template>
+
+			
+			<template #grid="slotProps">
+				<div class="col-12 md:col-4">
+					<div class="product-grid-item card">
+						<div class="product-grid-item-top">
+							<div>
+								<i class="pi pi-tag product-category-icon"></i>
+								<span class="product-category">{{slotProps.data.category}}</span>
+							</div>
+						</div>
+						<div class="product-grid-item-content">
+							<img  :alt="slotProps.data.name"  :src="'http://localhost:8081/storage/' + slotProps.data.img_url"/>
+							<div class="product-name">{{slotProps.data.name}}</div>
+							<div class="product-description">{{slotProps.data.description}}</div>
+
+						</div>
+						<div class="product-grid-item-bottom">
+							<span class="product-price">${{slotProps.data.price}}</span>
+							<Button @click="addToCart(slotProps.data)" icon="pi pi-shopping-cart" ></Button>
+						</div>
+					</div>
+				</div>
+			</template>
+		</DataView>
+	</div>
 </template>
-
-
 
 
 
@@ -56,7 +53,17 @@ export default {
   data() {
     return {
       store,
-      products: [],
+      products: [
+        
+      ],
+      layout: "grid",
+      sortKey: null,
+      sortOrder: null,
+      sortField: null,
+      sortOptions: [
+        { label: "Price High to Low", value: "!price" },
+        { label: "Price Low to High", value: "price" },
+      ],
     };
   },
 
@@ -68,6 +75,7 @@ export default {
   },
   methods: {
     addToCart(product) {
+     console.log(product.id);
       store.dispatch("cart/addCartItem", { productId: product.id });
     },
   },
@@ -90,38 +98,131 @@ export default {
 //     console.log(err.response);
 //   });
 </script>
-
-<style>
-.el-container {
-  display: block;
-  justify-content: center;
-
-  width: 700px;
-  margin: 20px auto;
+<style lang="scss" scoped>
+.card {
+  background: #ffffff;
+  padding: 2rem;
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  margin-bottom: 2rem;
 }
-.el-col {
-  margin-top: 10px;
-}
-.time {
-  font-size: 13px;
-  color: #999;
+.p-dropdown {
+  width: 14rem;
+  font-weight: normal;
 }
 
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
+.product-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.product-description {
+  margin: 0 0 1rem 0;
+}
+
+.product-category-icon {
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
+.product-category {
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+::v-deep(.product-list-item) {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-}
-
-.button {
-  padding: 0;
-  min-height: auto;
-}
-
-.image {
+  padding: 1rem;
   width: 100%;
-  display: block;
+
+  img {
+    width: 50px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    margin-right: 2rem;
+  }
+
+  .product-list-detail {
+    flex: 1 1 0;
+  }
+
+  .p-rating {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .product-price {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    align-self: flex-end;
+  }
+
+  .product-list-action {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .p-button {
+    margin-bottom: 0.5rem;
+  }
+}
+
+::v-deep(.product-grid-item) {
+  margin: 0.5rem;
+  border: 1px solid var(--surface-border);
+
+  .product-grid-item-top,
+  .product-grid-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  img {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    margin: 2rem 0;
+  }
+
+  .product-grid-item-content {
+    text-align: center;
+  }
+
+  .product-price {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .product-list-item {
+    flex-direction: column;
+    align-items: center;
+
+    img {
+      margin: 2rem 0;
+    }
+
+    .product-list-detail {
+      text-align: center;
+    }
+
+    .product-price {
+      align-self: center;
+    }
+
+    .product-list-action {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-list-action {
+      margin-top: 2rem;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+  }
 }
 </style>

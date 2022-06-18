@@ -40,6 +40,7 @@ const cartStore = {
       }
     },
     addProduct(state, product) {
+      console.log(product);
       let productIndex = state.cart.products.findIndex(
         (p) => p.id == product.id
       );
@@ -99,7 +100,8 @@ const cartStore = {
       return await axios
         .post("/api/cart", product)
         .then((res) => {
-          console.log(res);
+          console.log(product);
+          commit("addProduct",product);
 
           return res;
         })

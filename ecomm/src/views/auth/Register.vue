@@ -1,90 +1,74 @@
 <template>
-  <el-container>
-    <h2>Register</h2>
-    <el-alert v-if="error" :title="error" type="error" effect="dark" />
-
-    <el-form
-      style="margin-top: 20px"
-      ref="info"
-      :model="info"
-      :rules="rules"
-      label-position="top"
-      label-width="120px"
-    >
-      <el-form-item label="Email" prop="email">
-        <el-input class="error" name="email" v-model="info.email"></el-input>
-
-        <p style="color: red; margin: 0">{{ emailError }}</p>
-        {{ nameError }}
-      </el-form-item>
-      <el-form-item label="Name" prop="name">
-        <el-input name="name" v-model="info.name"></el-input>
-        <p style="color: red; margin: 0">{{ nameError }}</p>
-        {{ nameError }}
-      </el-form-item>
-      <el-form-item label="Password" prop="password">
-        <el-input
-          name="password"
-          type="password"
-          v-model="info.password"
-        ></el-input>
-        <p style="color: red; margin: 0">{{ passwordError }}</p>
-      </el-form-item>
-      <el-form-item label="Confirm Password" prop="password_confirmation">
-        <el-input
-          name="password"
-          type="password"
-          v-model="info.password_confirmation"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="register('info')" type="primary">Submit</el-button>
-      </el-form-item>
-    </el-form>
-  </el-container>
+  <div class="flex align-items-center flex-column pt-6 px-3">
+    <Card class="p-5 w-4">
+      <template #content>
+        <h4 class="text-center">Register</h4>
+        <div class="field">
+          <InputText
+            :class="{ 'p-invalid': v$.info.email.$error }"
+            v-model="v$.info.email.$model"
+            placeholder="Email"
+            type="email"
+          />
+          <small class="p-error">{{ emailError }}</small>
+          <span v-if="v$.info.email.$error">
+            <small
+              :key="error.$uid"
+              v-for="error of v$.info.email.$errors"
+              class="p-error"
+              >{{ error.$message }}</small
+            >
+          </span>
+        </div>
+        <div class="field">
+          <Password
+            :inputClass="{ 'p-invalid': v$.info.password.$error }"
+            v-model="v$.info.password.$model"
+            inputStyle="width:100%"
+            placeholder="Password"
+            type="password"
+            :feedback="false"
+          />
+          <small class="p-error">{{ passwordError }}</small>
+          <span v-if="v$.info.password.$error">
+            <small
+              :key="error.$uid"
+              v-for="error of v$.info.password.$errors"
+              class="p-error"
+              >{{ error.$message }}</small
+            >
+          </span>
+        </div>
+        <div class="field">
+          <Password
+            :inputClass="{ 'p-invalid': v$.info.password_confirmation.$error }"
+            v-model="v$.info.password_confirmation.$model"
+            inputStyle="width:100%"
+            placeholder="Password Confirmation"
+            type="password"
+            :feedback="false"
+          />
+       
+        </div>
+        <Button @click="register">Register</Button>
+      </template>
+    </Card>
+  </div>
 </template>
-
 
 <script>
 import axios from "../../http";
 import store from "../../store/store";
-
+import { email, required, minLength } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
 export default {
   name: "Register",
-
+  setup() {
+    return { v$: useVuelidate() };
+  },
   data() {
     return {
       store,
-      rules: {
-        name: [
-          {
-            required: true,
-            message: "Please enter your name",
-            trigger: "blur",
-          },
-        ],
-        email: [
-          {
-            type: "email",
-            required: true,
-            trigger: "blur",
-          },
-        ],
-        password: [
-          {
-            required: true,
-            type: "string",
-            trigger: "blur",
-          },
-        ],
-        password_confirmation: [
-          {
-            required: true,
-            type: "string",
-            trigger: "blur",
-          },
-        ],
-      },
       info: {
         email: "",
         name: "",
@@ -98,6 +82,15 @@ export default {
       passwordError: "",
     };
   },
+  validations() {
+    return {
+      info: {
+        email: { required, email },
+        password: { required, minLength: minLength(4) },
+        password_confirmation:{required}
+      },
+    };
+  },
 
   methods: {
     clearErrors() {
@@ -105,10 +98,11 @@ export default {
       this.passwordError = "";
       this.nameError = "";
     },
-    register(info) {
-      this.$refs[info]
-        .validate()
-        .then(() => {
+    async register(info){
+        const isFormCorrect = await this.v$.$validate();
+          if(!isFormCorrect){
+              return 
+          }
           let user = {
             email: this.info.email,
             name: this.info.name,
@@ -116,7 +110,7 @@ export default {
             password_confirmation: this.info.password_confirmation,
           };
           this.clearErrors();
-
+            
           store
             .dispatch("auth/register", user)
             .then((res) => {
@@ -127,29 +121,24 @@ export default {
                 this[key + "Error"] = err.errors[key].toString();
               }
             });
-        })
-        .catch((err) => {
-          return;
-        });
+  
+       
     },
   },
 };
 </script>
 
 
-<style scoped>
-.el-container {
-  display: block;
-  justify-content: center;
 
-  width: 450px;
-  margin: 50px auto;
+<style scoped>
+.p-inputtext {
+  width: 100%;
 }
-.el-input__inner {
-  border: 1px solid red;
-  overflow: hidden;
+.p-password {
+  display: block;
 }
-p.error {
-  color: red;
+
+.field > label {
+  display: block;
 }
 </style>
