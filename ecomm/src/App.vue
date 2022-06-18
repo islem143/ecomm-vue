@@ -1,18 +1,28 @@
 <template>
-  <router-view></router-view>
+  <router-view></router-view> 
+  
+
 </template>
 
 
 <script>
-import store from './store/store'
+import store from "./store/store";
 export default {
   name: "App",
+
   data() {
-    return {};
+    return {
+      display: true,
+    };
   },
-  created(){
+  methods: {
+    openBasic() {
+      this.displayBasic = true;
+    },
+  },
+  created() {
     store.dispatch("cart/getCartItems");
-  }
+  },
 };
 </script>
 

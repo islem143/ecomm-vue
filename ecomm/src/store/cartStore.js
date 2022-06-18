@@ -7,6 +7,11 @@ const cartStore = {
     },
   },
   getters: {
+    getQuantity(state){
+         return (id)=>{
+           return state.cart.products.find(p=>p.id==id)
+         }
+    },
     totalItems(state) {
       return state.cart.products.length;
     },

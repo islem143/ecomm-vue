@@ -1,23 +1,31 @@
 <template>
-  <el-container>
-    <el-main>
-      <h2>Product N {{ $route.params.id }}</h2>
-      <el-row gutter="40">
-        <el-col :span="8">
-          <img
-            :src="'http://localhost:8081/storage/' + product.img_url"
-            class="image"
-          />
-        </el-col>
-        <el-col :span="8">
-          <p>{{ product.name }}</p>
-          <p>{{ product.description }}</p>
-          <p>{{ product.price }}$</p>
-          <el-button @click="addToCart">Add to cart</el-button>
-        </el-col>
-      </el-row>
-    </el-main>
-  </el-container>
+  <div class="shadow-5 p-5 grid w-6 m-auto mt-8 gap-8">
+    <div class="w-max-4 col-5">
+      <img
+        :src="'http://localhost:8081/storage/' + product.img_url"
+        class="w-full h-auto border-rounded"
+      />
+    </div>
+    <div class="col flex flex-column justify-content-between">
+      <div>
+        <h2>{{ product.name }}</h2>
+        <small>Price</small>
+        <h3>{{ product.price }}$</h3>
+        <small>Description:</small>
+        <p>{{ product.description }}</p>
+
+        <p>Quantity</p>
+        <div class="flex">
+          <div class="flex gap-1 w-4">
+            <Button>-</Button>
+            <p class="w-2 m-auto">{{quantity}}</p>
+            <Button>+</Button>
+          </div>
+        </div>
+        <Button class="mt-5 flex-grow-1" @click="addToCart">Add to cart</Button>
+      </div>
+    </div>
+  </div>
 </template>
 
 
@@ -37,12 +45,12 @@ export default {
     return {
       store,
       product: {},
+      quantity:0
     };
   },
   methods: {
     addToCart() {
-      //store.commit("cart/addProduct",this.product);
-      store.dispatch("cart/addCartItem", { productId: this.product.id });
+      store.dispatch("cart/addCartItem", this.product);
     },
   },
 
@@ -50,7 +58,7 @@ export default {
     const id = this.$route.params.id;
     axios.get("/api/products/" + id).then((res) => {
       this.product = res.data;
-      console.log(res);
+      this.quantity=store.getters["cart/getQuantity"](9).quantity
     });
   },
 };
