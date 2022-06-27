@@ -19,27 +19,6 @@
               placeholder="Sort By Price"
               @change="onSortChange($event)"
             />
-<<<<<<< HEAD
-            <div style="padding: 14px">
-              {{ product.name }}
-              <div class="bottom">
-                <router-link
-                  :to="{ name: 'Product', params: { id: product.id } }"
-                  ><el-button type="text" class="button"
-                    >Detail</el-button
-                  ></router-link
-                >
-                <div>
-                  <el-button
-                    v-if="$can('create', 'Cart')"
-                    type="text"
-                    class="button"
-                    @click="addToCart(product)"
-                    >Add to cart</el-button
-                  >
-                
-                </div>
-=======
           </div>
           <div class="col-6" style="text-align: right">
             <DataViewLayoutOptions v-model="layout" />
@@ -64,7 +43,6 @@
               <div class="product-name">{{ slotProps.data.name }}</div>
               <div class="product-description">
                 {{ slotProps.data.description }}
->>>>>>> primevue
               </div>
             </div>
             <div class="product-grid-item-bottom">
@@ -116,10 +94,7 @@ export default {
   },
   methods: {
     addToCart(product) {
-<<<<<<< HEAD
-=======
       console.log(product.id);
->>>>>>> primevue
       store.dispatch("cart/addCartItem", product);
     },
   },
