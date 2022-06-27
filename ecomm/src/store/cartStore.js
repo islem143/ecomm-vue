@@ -104,7 +104,7 @@ const cartStore = {
         });
 
         commit("setProducts", transformedProducts);
-        return res;
+        return transformedProducts;
       });
     },
     async addCartItem({ commit }, product) {

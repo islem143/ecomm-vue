@@ -1,9 +1,10 @@
 <template>
-  <div class="shadow-5 p-5 grid w-6 m-auto mt-8 gap-8">
-    <div class="w-max-4 col-5">
+<div class="container">
+  <div class=" p-5 grid w-6 m-auto mt-8 gap-8">
+    <div class="w-max-5 col-7">
       <img
         :src="'http://localhost:8081/storage/' + product.img_url"
-        class="w-full h-auto border-rounded"
+        class="border border-1 surface-border p-5 w-full h-full border-rounded"
       />
     </div>
     <div class="col flex flex-column justify-content-between">
@@ -11,20 +12,35 @@
         <h2>{{ product.name }}</h2>
         <small>Price</small>
         <h3>{{ product.price }}$</h3>
-        <small>Description:</small>
-        <p>{{ product.description }}</p>
+      
 
         <p>Quantity</p>
         <div class="flex">
-          <div class="flex gap-1 w-4">
-            <Button>-</Button>
-            <p class="w-2 m-auto">{{quantity}}</p>
-            <Button>+</Button>
+          <div class="flex gap-1 w-2">
+            <Button label="-" />
+            <p class="w- m-auto">{{quantity}}</p>
+            <Button label="+" />
           </div>
         </div>
-        <Button class="mt-5 flex-grow-1" @click="addToCart">Add to cart</Button>
+        <Button icon="pi pi-shopping-cart" class="mt-5 flex-grow-1" @click="addToCart" label="Add To Cart"/>
       </div>
     </div>
+  </div>
+  <div>
+
+
+<TabView class="w-8 m-auto">
+	<TabPanel header="Description">
+		Description
+	</TabPanel>
+	<TabPanel header="Reviews">
+		Reviews
+	</TabPanel>
+	<TabPanel header="Comments">
+		Comments
+	</TabPanel>
+</TabView>
+  </div>
   </div>
 </template>
 

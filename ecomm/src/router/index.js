@@ -11,7 +11,7 @@ import { getRole, ROLES } from "../roles";
 import store from "../store/store";
 import PublicLayout from "../components/ui/PublicLayout.vue";
 import AdminLayout from "../components/ui/AdminLayout.vue";
-import AuthLayout from "../components/ui/AuthLayout.vue";
+
 import Cart from "../views/cart/Cart.vue";
 import Order from "../views/order/Order.vue";
 const routes = [
@@ -19,7 +19,7 @@ const routes = [
     path: "/auth",
     //redirect:"/login",
     name: "Auth",
-    component: AuthLayout,
+    component: PublicLayout,
     meta: { isGuest: true },
     children: [
       { path: "login", component: Login, name: "Login" },

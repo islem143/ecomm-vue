@@ -1,25 +1,23 @@
 <template>
-  <el-container>
-    <el-main>
+  <div>
+    <main class="container">
       <CartTable />
-      <p>
-        Total Amount:
-        <b>{{ totalPrice }} $</b>
-      </p>
-      <el-button
-        style="margin-top: 10px"
-        size="small"
-        type="primary"
-        @click="handleCheckout"
-        >checkout</el-button
-      >
-    </el-main>
-  </el-container>
+      <div class="flex flex-row-reverse">
+        <div>
+          <p class="mt-5 text-lg">
+            Total Amount:
+            <b>{{ totalPrice }} $</b>
+          </p>
+          <Button label="Precced To Checkout" />
+        </div>
+      </div>
+    </main>
+  </div>
 </template>
 
 <script>
 import store from "../../store/store";
-import CartTable from "../../components/cart/CartTable2.vue";
+import CartTable from "../../components/cart/CartTable.vue";
 import { mapGetters } from "vuex";
 
 export default {

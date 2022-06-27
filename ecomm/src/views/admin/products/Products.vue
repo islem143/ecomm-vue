@@ -1,5 +1,5 @@
 <template>
-  <div class="products">
+  <!-- <div class="products">
     <el-button class="addBtn" @click="addProduct">Add Product</el-button>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column label="Name" prop="name" />
@@ -47,22 +47,23 @@
     >
       <AddProduct :addProductToList="addProductToList" />
     </Dialog>
-  </div>
+  </div> -->
+  <div></div>
 </template>
 
 <script>
-import UpdateProduct from "./UpdateProduct.vue";
-import AddProduct from "./AddProduct.vue";
-import Dialog from "../../../components/ui/Dialog.vue";
+//import UpdateProduct from "./UpdateProduct.vue";
+//import AddProduct from "./AddProduct.vue";
+//import Dialog from "../../../components/ui/Dialog.vue";
 import axios from "../../../http";
-import { ElMessageBox } from "element-plus";
+
 
 export default {
   name: "Products",
   components: {
-    UpdateProduct,
-    Dialog,
-    AddProduct,
+    // UpdateProduct,
+    // Dialog,
+    // AddProduct,
   },
   data() {
     return {
@@ -103,25 +104,25 @@ export default {
       this.tableData.splice(index, 1, editedProduct);
       this.editDialog=false
     },
-    handleDelete(index, row) {
-      console.log(row);
-      ElMessageBox.confirm("Are you sure to close this dialog?")
-        .then(() => {
-          axios
-            .delete("/api/products/" + row.id)
-            .then((res) => {
-              console.log(res);
-            })
-            .catch((err) => {
-              console.log(err.response);
-            });
-          this.tableData = this.tableData.filter((p) => p.id != row.id);
-          done();
-        })
-        .catch(() => {
-          // catch error
-        });
-    },
+    // handleDelete(index, row) {
+    //   console.log(row);
+    //   ElMessageBox.confirm("Are you sure to close this dialog?")
+    //     .then(() => {
+    //       axios
+    //         .delete("/api/products/" + row.id)
+    //         .then((res) => {
+    //           console.log(res);
+    //         })
+    //         .catch((err) => {
+    //           console.log(err.response);
+    //         });
+    //       this.tableData = this.tableData.filter((p) => p.id != row.id);
+    //       done();
+    //     })
+    //     .catch(() => {
+    //       // catch error
+    //     });
+    // },
   },
 };
 </script>

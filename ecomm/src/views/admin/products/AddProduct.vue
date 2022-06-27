@@ -1,5 +1,6 @@
 <template>
-  <el-form
+<div></div>
+  <!-- <el-form
     ref="info"
     :model="info"
     :rules="rules"
@@ -36,7 +37,7 @@
     <el-form-item>
       <el-button @click="addProduct('info')" type="primary">Submit</el-button>
     </el-form-item>
-  </el-form>
+  </el-form> -->
 </template>
 
 

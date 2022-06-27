@@ -9,7 +9,7 @@
 
 
 <script>
-import Header from "./Header2.vue";
+import Header from "./Header.vue";
 
 export default {
   name: "PublicLayout",
