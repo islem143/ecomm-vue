@@ -27,14 +27,12 @@
       </template>
 
       <template #grid="slotProps">
-        <div class="col-12 md:col-3">
+        <div class="lg:col-4 md:col-6 mx-auto gap-7">
           <div class="product-grid-item card">
             <div class="product-grid-item-top">
               <div>
                 <i class="pi pi-tag product-category-icon"></i>
-                <span class="product-category">{{
-                  slotProps.data.category
-                }}</span>
+                <span class="product-category"> Man </span>
               </div>
             </div>
             <div class="product-grid-item-content">
@@ -122,7 +120,7 @@ export default {
 <style lang="scss" scoped>
 .card {
   background: #ffffff;
-  padding: 2rem;
+  padding: 1.5rem;
   box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
     0 1px 3px 0 rgba(0, 0, 0, 0.12);
   border-radius: 4px;

@@ -1,46 +1,58 @@
 <template>
-<div class="container">
-  <div class=" p-5 grid w-6 m-auto mt-8 gap-8">
-    <div class="w-max-5 col-7">
-      <img
-        :src="'http://localhost:8081/storage/' + product.img_url"
-        class="border border-1 surface-border p-5 w-full h-full border-rounded"
-      />
-    </div>
-    <div class="col flex flex-column justify-content-between">
-      <div>
-        <h2>{{ product.name }}</h2>
-        <small>Price</small>
-        <h3>{{ product.price }}$</h3>
-      
+  <div class="container">
+    <div class="p-5 grid m-auto mt-8 gap-8 justify-content-center">
+      <div class="col-4">
+        <img
+          :src="'http://localhost:8081/storage/' + product.img_url"
+          class="
+            border border-1
+            surface-border
+            p-5
+            w-full
+            h-full
+            border-rounded
+          "
+        />
+      </div>
+      <div class="col-4 flex flex-column justify-content-between">
+        <div>
+          <h2>{{ product.name }}</h2>
+          <Rating v-model="val" :readonly="true" :cancel="false" />
+          <hr />
 
-        <p>Quantity</p>
-        <div class="flex">
-          <div class="flex gap-1 w-2">
-            <Button label="-" />
-            <p class="w- m-auto">{{quantity}}</p>
-            <Button label="+" />
+          <h2>{{ product.price }}$</h2>
+          <small class="text-800">CATEGORY: category1,category2 </small>
+
+          <div class="flex mt-4 gap-5">
+             <div class="flex">
+              <Button class=" px-3 bg-white text-900 border-400 border-noround">
+                -
+              </Button>
+              <p class="  border border-1 px-4 py-3 m-auto border-400">
+                {{ quantity }}
+              </p>
+              <Button class="  px-3 bg-white text-900 border-400 border-noround">
+                +
+              </Button>
+              </div>
+              <Button
+                icon="pi pi-shopping-cart"
+                class="  flex-grow-1"
+                @click="addToCart"
+                label="Add To Cart"
+              />
+       
           </div>
         </div>
-        <Button icon="pi pi-shopping-cart" class="mt-5 flex-grow-1" @click="addToCart" label="Add To Cart"/>
       </div>
     </div>
-  </div>
-  <div>
-
-
-<TabView class="w-8 m-auto">
-	<TabPanel header="Description">
-		Description
-	</TabPanel>
-	<TabPanel header="Reviews">
-		Reviews
-	</TabPanel>
-	<TabPanel header="Comments">
-		Comments
-	</TabPanel>
-</TabView>
-  </div>
+    <div>
+      <TabView class="w-8 m-auto">
+        <TabPanel header="Description"> Description </TabPanel>
+        <TabPanel header="Reviews"> Reviews </TabPanel>
+        <TabPanel header="Comments"> Comments </TabPanel>
+      </TabView>
+    </div>
   </div>
 </template>
 
@@ -59,9 +71,10 @@ export default {
 
   data() {
     return {
+      val: 4,
       store,
       product: {},
-      quantity:0
+      quantity: 0,
     };
   },
   methods: {
@@ -74,13 +87,16 @@ export default {
     const id = this.$route.params.id;
     axios.get("/api/products/" + id).then((res) => {
       this.product = res.data;
-      this.quantity=store.getters["cart/getQuantity"](9).quantity
+      this.quantity = store.getters["cart/getQuantity"](9).quantity;
     });
   },
 };
 </script>
 
 <style scoped>
+::v-deep(.p-rating .p-rating-icon.pi-star-fill) {
+  color: #f65b5b;
+}
 img {
   border-radius: 3px;
 }

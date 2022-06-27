@@ -1,16 +1,17 @@
 <template>
-
-  <Menubar :model="items">
-
-      <template #end>
-        <router-link v-if="isAuth"  to="/cart">
-         <i   class="pi pi-shopping-cart " style="margin-right: 20px;font-size: 2rem"></i>
+<div class="container bg-white" >
+  <Menubar :model="items" >
+    <template #end>
+      <router-link v-if="isAuth" to="/cart">
+        <i
+          class="pi pi-shopping-cart"
+          style="margin-right: 20px; font-size: 2rem"
+        ></i>
         <Badge :value="totalItems" />
-        </router-link>
-        
+      </router-link>
     </template>
-     </Menubar>
- 
+  </Menubar>
+  </div>
 </template>
 
 
@@ -36,26 +37,25 @@ export default {
       items: [
         {
           label: "Home",
-          to:"/"
+          to: "/",
         },
         {
           label: "Products",
-          to:"/products"
+          to: "/products",
         },
         {
           label: "Login",
-          to:"/auth/login",
+          to: "/auth/login",
           visible: () => !this.isAuth,
         },
         {
           label: "Register",
-           to:"/auth/register",
+          to: "/auth/register",
           visible: () => !this.isAuth,
         },
         {
           label: "Logout",
           command: () => {
-            
             store.dispatch("auth/logout").then((res) => {});
             store.commit("cart/clearCart");
             this.$router.replace("/");
