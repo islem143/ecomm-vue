@@ -7,6 +7,10 @@ declare module 'vue' {
     AdminLayout: typeof import('./src/components/ui/AdminLayout.vue')['default']
     AuthLayout: typeof import('./src/components/ui/AuthLayout.vue')['default']
     CartTable: typeof import('./src/components/cart/CartTable.vue')['default']
+<<<<<<< HEAD
+=======
+    CartTable2: typeof import('./src/components/cart/CartTable2.vue')['default']
+>>>>>>> primevue
     Dialog: typeof import('./src/components/ui/Dialog.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElBadge: typeof import('element-plus/es')['ElBadge']
@@ -27,6 +31,10 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     Header: typeof import('./src/components/ui/Header.vue')['default']
+<<<<<<< HEAD
+=======
+    Header2: typeof import('./src/components/ui/Header2.vue')['default']
+>>>>>>> primevue
     OrderForm: typeof import('./src/components/orders/OrderForm.vue')['default']
     OrdersTable: typeof import('./src/components/orders/OrdersTable.vue')['default']
     PublicLayout: typeof import('./src/components/ui/PublicLayout.vue')['default']

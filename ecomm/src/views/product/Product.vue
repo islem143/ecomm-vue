@@ -1,23 +1,59 @@
 <template>
-  <el-container>
-    <el-main>
-      <h2>Product N {{ $route.params.id }}</h2>
-      <el-row gutter="40">
-        <el-col :span="8">
-          <img
-            :src="'http://localhost:8081/storage/' + product.img_url"
-            class="image"
-          />
-        </el-col>
-        <el-col :span="8">
-          <p>{{ product.name }}</p>
-          <p>{{ product.description }}</p>
-          <p>{{ product.price }}$</p>
-          <el-button @click="addToCart">Add to cart</el-button>
-        </el-col>
-      </el-row>
-    </el-main>
-  </el-container>
+  <div class="container">
+    <div class="p-5 grid m-auto mt-8 gap-8 justify-content-center">
+      <div class="col-4">
+        <img
+          :src="'http://localhost:8081/storage/' + product.img_url"
+          class="
+            border border-1
+            surface-border
+            p-5
+            w-full
+            h-full
+            border-rounded
+          "
+        />
+      </div>
+      <div class="col-4 flex flex-column justify-content-between">
+        <div>
+          <h2>{{ product.name }}</h2>
+          <Rating v-model="val" :readonly="true" :cancel="false" />
+          <hr />
+
+          <h2>{{ product.price }}$</h2>
+          <small class="text-800">CATEGORY: category1,category2 </small>
+
+          <div class="flex mt-4 gap-5">
+             <div class="flex">
+              <Button class=" px-3 bg-white text-900 border-400 border-noround">
+                -
+              </Button>
+              <p class="  border border-1 px-4 py-3 m-auto border-400">
+                {{ quantity }}
+              </p>
+              <Button class="  px-3 bg-white text-900 border-400 border-noround">
+                +
+              </Button>
+              </div>
+              <Button
+                icon="pi pi-shopping-cart"
+                class="  flex-grow-1"
+                @click="addToCart"
+                label="Add To Cart"
+              />
+       
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <TabView class="w-8 m-auto">
+        <TabPanel header="Description"> Description </TabPanel>
+        <TabPanel header="Reviews"> Reviews </TabPanel>
+        <TabPanel header="Comments"> Comments </TabPanel>
+      </TabView>
+    </div>
+  </div>
 </template>
 
 
@@ -35,14 +71,15 @@ export default {
 
   data() {
     return {
+      val: 4,
       store,
       product: {},
+      quantity: 0,
     };
   },
   methods: {
     addToCart() {
-      //store.commit("cart/addProduct",this.product);
-      store.dispatch("cart/addCartItem", { productId: this.product.id });
+      store.dispatch("cart/addCartItem", this.product);
     },
   },
 
@@ -50,13 +87,16 @@ export default {
     const id = this.$route.params.id;
     axios.get("/api/products/" + id).then((res) => {
       this.product = res.data;
-      console.log(res);
+      this.quantity = store.getters["cart/getQuantity"](9).quantity;
     });
   },
 };
 </script>
 
 <style scoped>
+::v-deep(.p-rating .p-rating-icon.pi-star-fill) {
+  color: #f65b5b;
+}
 img {
   border-radius: 3px;
 }

@@ -1,5 +1,5 @@
 <template>
-  <el-row class="tac">
+  <!-- <el-row class="tac">
     <el-col :span="4">
       <h5 class="mb-2">
         <span class="icon"
@@ -81,7 +81,8 @@
     <el-col class="flex" :span="20">
       <router-view></router-view>
     </el-col>
-  </el-row>
+  </el-row> -->
+  <div></div>
 </template>
 
 <script>

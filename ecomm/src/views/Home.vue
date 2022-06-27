@@ -1,8 +1,11 @@
 <template>
-  <el-container>
+  <!-- <el-container>
     <h2>Home</h2>
     {{ user }}
-  </el-container>
+   
+
+  </el-container> -->
+  <div></div>
 </template>
 
 
@@ -11,6 +14,17 @@ import { mapState } from "vuex";
 
 export default {
   name: "Home",
+
+  data(){
+    return {
+      		            displayBasic: false,
+    }
+  },
+  methods:{
+     openBasic() {
+            this.displayBasic = true;
+        }
+  },
   computed: {
     ...mapState("auth", {
       user: (state) => state.user,
@@ -24,11 +38,5 @@ export default {
 
 
 <style scoped>
-.el-container {
-  display: block;
-  justify-content: center;
 
-  width: 450px;
-  margin: 50px auto;
-}
 </style>

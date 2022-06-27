@@ -7,12 +7,20 @@ const cartStore = {
     },
   },
   getters: {
+    getQuantity(state){
+         return (id)=>{
+           return state.cart.products.find(p=>p.id==id)
+         }
+    },
     totalItems(state) {
       return state.cart.products.length;
     },
+    products(state){
+       return state.cart.products;
+    },
     totalPrice(state) {
       let prices = state.cart.products.map((p) => p.total);
-      console.log(prices);
+
       let total = prices.reduce((start, p) => {
         return start + p;
       }, 0);
@@ -20,6 +28,9 @@ const cartStore = {
     },
   },
   mutations: {
+    clearCart(state){
+     state.cart={products:[]}
+    },
     setProducts(state, products) {
       state.cart.products = products;
     },
@@ -40,6 +51,7 @@ const cartStore = {
       }
     },
     addProduct(state, product) {
+   
       let productIndex = state.cart.products.findIndex(
         (p) => p.id == product.id
       );
@@ -97,14 +109,14 @@ const cartStore = {
         });
 
         commit("setProducts", transformedProducts);
-        return res;
+        return transformedProducts;
       });
     },
     async addCartItem({ commit }, product) {
       return await axios
-        .post("/api/cart", {productId:product.id})
+        .post("/api/cart", { productId: product.id })
         .then((res) => {
-          commit("addProduct",product)
+          commit("addProduct", product);
 
           return res;
         })

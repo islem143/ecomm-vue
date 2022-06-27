@@ -1,32 +1,17 @@
 <template>
-  <el-container>
-
-    <el-main class="grid">
-        <div>
-        <OrderForm />
-      </div>
-      <div>
-        <OrdersTable />
-        <p>
-          Total Amount:
-          <b>{{ totalPrice }} $</b>
-        </p>
-      </div>
-    
-    </el-main>
-  </el-container>
+ <div></div>
 </template>
 
 <script>
 import axios from "../../http";
-import { ElMessageBox } from "element-plus";
+
 import store from "../../store/store";
-import OrdersTable from "../../components/orders/OrdersTable.vue";
-import OrderForm from "../../components/orders/OrderForm.vue";
+//import OrdersTable from "../../components/orders/OrdersTable.vue";
+//import OrderForm from "../../components/orders/OrderForm.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "Order",
-  components: { OrdersTable, OrderForm },
+  //components: { OrdersTable, OrderForm },
   data() {
     return {
       id: null,
@@ -62,30 +47,7 @@ export default {
       this.id = row.id;
       this.editDialog = true;
     },
-    addProduct() {
-      this.addDialog = true;
-    },
-    addProductToList(product) {
-      this.tableData.push(product);
-      this.addDialog = false;
-    },
-    editProductOnList(editedProduct) {
-      let index = this.tableData.findIndex((p) => p.id == editedProduct.id);
-      this.tableData.splice(index, 1, editedProduct);
-      this.editDialog = false;
-    },
-    handleDelete(index, row) {
-      ElMessageBox.confirm("Are you sure to close this dialog?")
-        .then(() => {
-          store.dispatch("cart/deleteCartItem", row).then((res) => {
-            console.log(res);
-          });
-          done();
-        })
-        .catch(() => {
-          // catch error
-        });
-    },
+  
   },
 };
 </script>
