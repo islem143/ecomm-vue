@@ -1,17 +1,12 @@
 <template>
   <div class="container">
     <div class="p-5 grid m-auto mt-8 gap-8 justify-content-center">
-      <div class="col-4">
-        <img
+      <div class="col-3">
+        <Image
+          :preview="true"
+          imageClass="w-full"
           :src="'http://localhost:8081/storage/' + product.img_url"
-          class="
-            border border-1
-            surface-border
-            p-5
-            w-full
-            h-full
-            border-rounded
-          "
+          class="border w-full border-1 surface-border border-rounded"
         />
       </div>
       <div class="col-4 flex flex-column justify-content-between">
@@ -24,24 +19,23 @@
           <small class="text-800">CATEGORY: category1,category2 </small>
 
           <div class="flex mt-4 gap-5">
-             <div class="flex">
-              <Button class=" px-3 bg-white text-900 border-400 border-noround">
+            <div class="flex">
+              <Button class="hover:text-blue-400 px-3 bg-white text-900 border-400 border-noround">
                 -
               </Button>
-              <p class="  border border-1 px-4 py-3 m-auto border-400">
+              <p class=" border border-1 px-4 py-3 m-auto border-400">
                 {{ quantity }}
               </p>
-              <Button class="  px-3 bg-white text-900 border-400 border-noround">
+              <Button class="hover:text-blue-400 px-3 bg-white text-900 border-400 border-noround">
                 +
               </Button>
-              </div>
-              <Button
-                icon="pi pi-shopping-cart"
-                class="  flex-grow-1"
-                @click="addToCart"
-                label="Add To Cart"
-              />
-       
+            </div>
+            <Button
+              icon="pi pi-shopping-cart"
+              class="flex-grow-1"
+              @click="addToCart"
+              label="Add To Cart"
+            />
           </div>
         </div>
       </div>

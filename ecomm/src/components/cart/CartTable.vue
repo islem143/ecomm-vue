@@ -13,9 +13,10 @@
       >
         <Column header="Image">
           <template #body="slotProps">
+
             <img
-              src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png"
-              :alt="slotProps.data.image"
+               :src="'http://localhost:8081/storage/' + slotProps.data.img_url"
+          
               class="product-image"
             />
           </template>
@@ -73,7 +74,7 @@
       class="p-fluid"
     >
       <img
-        src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png"
+        :src="product.img_url"
         :alt="product.image"
         class="product-image"
         v-if="product.image"

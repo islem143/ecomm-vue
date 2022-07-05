@@ -13,7 +13,7 @@ const cartStore = {
          }
     },
     totalItems(state) {
-      return state.cart.products.length;
+      return state.cart.products.length?state.cart.products.length:"0";
     },
     products(state){
        return state.cart.products;
@@ -105,6 +105,7 @@ const cartStore = {
             quantity: p.pivot.quantity,
             price: p.price,
             total: p.price * p.pivot.quantity,
+            img_url:p.img_url
           };
         });
 

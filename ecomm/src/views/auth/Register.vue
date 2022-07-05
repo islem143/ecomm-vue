@@ -5,6 +5,23 @@
         <h4 class="text-center">Register</h4>
         <div class="field">
           <InputText
+            :class="{ 'p-invalid': v$.info.name.$error }"
+            v-model="v$.info.name.$model"
+            placeholder="Name"
+            type="name"
+          />
+          <small class="p-error">{{ nameError }}</small>
+          <span v-if="v$.info.name.$error">
+            <small
+              :key="error.$uid"
+              v-for="error of v$.info.name.$errors"
+              class="p-error"
+              >{{ error.$message }}</small
+            >
+          </span>
+        </div>
+        <div class="field">
+          <InputText
             :class="{ 'p-invalid': v$.info.email.$error }"
             v-model="v$.info.email.$model"
             placeholder="Email"
@@ -48,7 +65,6 @@
             type="password"
             :feedback="false"
           />
-       
         </div>
         <Button @click="register">Register</Button>
       </template>
@@ -85,9 +101,10 @@ export default {
   validations() {
     return {
       info: {
+        name: { required },
         email: { required, email },
         password: { required, minLength: minLength(4) },
-        password_confirmation:{required}
+        password_confirmation: { required },
       },
     };
   },
@@ -98,31 +115,29 @@ export default {
       this.passwordError = "";
       this.nameError = "";
     },
-    async register(info){
-        const isFormCorrect = await this.v$.$validate();
-          if(!isFormCorrect){
-              return 
+    async register(info) {
+      const isFormCorrect = await this.v$.$validate();
+      if (!isFormCorrect) {
+        return;
+      }
+      let user = {
+        email: this.info.email,
+        name: this.info.name,
+        password: this.info.password,
+        password_confirmation: this.info.password_confirmation,
+      };
+      this.clearErrors();
+
+      store
+        .dispatch("auth/register", user)
+        .then((res) => {
+          this.$router.push("/");
+        })
+        .catch((err) => {
+          for (const key in err.errors) {
+            this[key + "Error"] = err.errors[key].toString();
           }
-          let user = {
-            email: this.info.email,
-            name: this.info.name,
-            password: this.info.password,
-            password_confirmation: this.info.password_confirmation,
-          };
-          this.clearErrors();
-            
-          store
-            .dispatch("auth/register", user)
-            .then((res) => {
-              this.$router.push("/");
-            })
-            .catch((err) => {
-              for (const key in err.errors) {
-                this[key + "Error"] = err.errors[key].toString();
-              }
-            });
-  
-       
+        });
     },
   },
 };

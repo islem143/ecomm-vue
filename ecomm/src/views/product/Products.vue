@@ -1,65 +1,104 @@
 <template>
-  <div class="container mt-8">
-    <h1>Products</h1>
-    <DataView
-      :value="products"
-      :layout="layout"
-      :paginator="true"
-      :rows="4"
-      :sortOrder="sortOrder"
-      :sortField="sortField"
-    >
-      <template #header>
-        <div class="grid grid-nogutter">
-          <div class="col-6" style="text-align: left">
-            <Dropdown
-              v-model="sortKey"
-              :options="sortOptions"
-              optionLabel="label"
-              placeholder="Sort By Price"
-              @change="onSortChange($event)"
-            />
+  <div class="container grid mt-8 mx-auto">
+    <div class="xl:col-3 col-12 mb-4 col-offset-1">
+      <Accordion :multiple="true">
+        <AccordionTab header="Categories">
+          <Listbox
+            v-model="selectedCategory"
+            :options="categories"
+            optionLabel="name"
+          />
+        </AccordionTab>
+        <AccordionTab header="Header II">
+          <p>Price</p>
+          <Slider v-model="value"
+        /></AccordionTab>
+        <AccordionTab header="Header III"> Content </AccordionTab>
+      </Accordion>
+    </div>
+    <div class="xl:col-7 col-12">
+      <DataView
+        :value="products"
+        :layout="layout"
+        :paginator="true"
+        :rows="4"
+        :sortOrder="sortOrder"
+        :sortField="sortField"
+      >
+        <template #header>
+          <div class="grid grid-nogutter">
+            <div class="col-6" style="text-align: left">
+              <Dropdown
+                v-model="sortKey"
+                :options="sortOptions"
+                optionLabel="label"
+                placeholder="Sort By Price"
+                @change="onSortChange($event)"
+              />
+            </div>
+            <div class="col-6" style="text-align: right">
+              <DataViewLayoutOptions v-model="layout" />
+            </div>
           </div>
-          <div class="col-6" style="text-align: right">
-            <DataViewLayoutOptions v-model="layout" />
-          </div>
-        </div>
-      </template>
+        </template>
 
-      <template #grid="slotProps">
-        <div class="lg:col-4 md:col-6 mx-auto gap-7">
-          <div class="product-grid-item card">
-            <div class="product-grid-item-top">
+        <template #grid="slotProps">
+          <div class="col-12 md:col-6 lg:col-4">
+            <div class="product-grid-item card p-0 overflow-hidden">
+              <!-- <div class="product-grid-item-top">
               <div>
                 <i class="pi pi-tag product-category-icon"></i>
                 <span class="product-category"> Man </span>
               </div>
-            </div>
-            <div class="product-grid-item-content">
-              <img
-                :alt="slotProps.data.name"
-                :src="'http://localhost:8081/storage/' + slotProps.data.img_url"
-              />
-              <div class="product-name">{{ slotProps.data.name }}</div>
-              <div class="product-description">
-                {{ slotProps.data.description }}
+            </div> -->
+              <div class="w-full m-0">
+                <img
+                  @click="productDetail(slotProps.data.id)"
+                  class="w-full m-0 cursor-pointer"
+                  :alt="slotProps.data.name"
+                  :src="
+                    'http://localhost:8081/storage/' + slotProps.data.img_url
+                  "
+                />
+              </div>
+
+              <div class="product-grid-item-content p-3">
+                <div class="product-name">{{ slotProps.data.name }}</div>
+                <div class="product-description">
+                  {{ slotProps.data.description }}
+                </div>
+                <div>
+                  <span class="product-price">${{ slotProps.data.price }}</span>
+                </div>
+              </div>
+              <div
+                class="
+                  product-grid-item-bottom
+                  px-3
+                  pb-2
+                  justify-content-between
+                "
+              >
+                <i
+                  class="
+                    cursor-pointer
+                    pi pi-heart-fill
+                    text-400 text-2xl
+                    hover:text-red-500
+                  "
+                ></i>
+
+                <Button
+                  @click="addToCart(slotProps.data)"
+                  icon="pi pi-shopping-cart "
+                  class="py-2"
+                ></Button>
               </div>
             </div>
-            <div class="product-grid-item-bottom">
-              <span class="product-price">${{ slotProps.data.price }}</span>
-              <router-link
-                :to="{ name: 'Product', params: { id: slotProps.data.id } }"
-                ><Button>Detail</Button></router-link
-              >
-              <Button
-                @click="addToCart(slotProps.data)"
-                icon="pi pi-shopping-cart"
-              ></Button>
-            </div>
           </div>
-        </div>
-      </template>
-    </DataView>
+        </template>
+      </DataView>
+    </div>
   </div>
 </template>
 
@@ -73,6 +112,49 @@ export default {
   name: "Products",
   data() {
     return {
+      value: 4,
+      selectedCategory: null,
+      categories: [
+        { name: "Electronics", code: "EC" },
+        { name: "Sports", code: "SP" },
+        { name: "Accessoires", code: "ACC" },
+      ],
+      items: [
+        {
+          label: "Categories",
+          data: "Documents Folder",
+
+          items: [
+            {
+              key: "0-0",
+              label: "Man",
+              data: "Work Folder",
+            },
+            {
+              key: "0-1",
+              label: "Home",
+              data: "Home Folder",
+            },
+          ],
+        },
+        {
+          label: "Price",
+          data: "Documents Folder",
+
+          items: [
+            {
+              key: "0-0",
+              label: "Man",
+              data: "Work Folder",
+            },
+            {
+              key: "0-1",
+              label: "Home",
+              data: "Home Folder",
+            },
+          ],
+        },
+      ],
       store,
       products: [],
       layout: "grid",
@@ -97,9 +179,11 @@ export default {
       console.log(product.id);
       store.dispatch("cart/addCartItem", product);
     },
+    productDetail(id) {
+      this.$router.push("/product/" + id);
+    },
   },
 };
-
 </script>
 <style lang="scss" scoped>
 .card {
@@ -107,7 +191,7 @@ export default {
   padding: 1.5rem;
   box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
     0 1px 3px 0 rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
+
   margin-bottom: 2rem;
 }
 .p-dropdown {
@@ -197,7 +281,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 700px) {
   .product-list-item {
     flex-direction: column;
     align-items: center;
