@@ -14,6 +14,9 @@ import AdminLayout from "../components/ui/AdminLayout.vue";
 
 import Cart from "../views/cart/Cart.vue";
 import Order from "../views/order/Order.vue";
+import OrderInfo from "../views/order/OrderInfo.vue";
+import OrderPayment from "../views/order/OrderPayment.vue";
+import OrderConfirmation from "../views/order/OrderConfirmation.vue";
 const routes = [
   {
     path: "/auth",
@@ -52,9 +55,30 @@ const routes = [
       },
       {
         path: "orders",
+        redirect: "/orders/info",
         name: "Order",
         component: Order,
-        meta: { requireAuth: true, roles: [ROLES.CLIENT] },
+        meta: {
+          requireAuth: true,
+          roles: [ROLES.CLIENT],
+        },
+        children: [
+          {
+            path: "info",
+            name: "OrderInfo",
+            component: OrderInfo,
+          },
+          {
+            path: "payment",
+            name: "OrderPayment",
+            component: OrderPayment,
+          },
+          {
+            path: "confirmation",
+            name: "OrderConfirmation",
+            component: OrderConfirmation,
+          },
+        ],
       },
     ],
   },

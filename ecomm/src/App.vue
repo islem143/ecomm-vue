@@ -1,4 +1,5 @@
 <template>
+<Toast/>
   <router-view></router-view>
 </template>
 
@@ -15,7 +16,7 @@ export default {
   },
  
   created() {
-    store.dispatch("cart/getCartItems");
+    //store.dispatch("cart/getCartItems");
   },
 };
 </script>

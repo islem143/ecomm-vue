@@ -10,10 +10,12 @@
   "dependencies": {
     "@casl/ability": "^5.4.3",
     "@casl/vue": "^2.1.2",
+    "@stripe/stripe-js": "^1.32.0",
     "@vuelidate/core": "^2.0.0-alpha.35",
     "@vuelidate/validators": "^2.0.0-alpha.27",
     "async-validator": "^4.0.7",
     "axios": "^0.26.1",
+    "dotenv": "^16.0.1",
     "primeflex": "^3.2.1",
     "primeicons": "^5.0.0",
     "primevue": "^3.15.0",

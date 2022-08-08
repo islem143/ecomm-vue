@@ -10,9 +10,8 @@
             placeholder="Email"
             type="email"
           />
-           <small class="p-error">{{emailError}}</small>
+          <small class="p-error">{{ emailError }}</small>
           <span v-if="v$.info.email.$error">
-           
             <small
               :key="error.$uid"
               v-for="error of v$.info.email.$errors"
@@ -30,7 +29,7 @@
             type="password"
             :feedback="false"
           />
-          <small class="p-error">{{passwordError}}</small>
+          <small class="p-error">{{ passwordError }}</small>
           <span v-if="v$.info.password.$error">
             <small
               :key="error.$uid"
@@ -86,9 +85,9 @@ export default {
 
     async login(info) {
       const isFormCorrect = await this.v$.$validate();
-       if(!isFormCorrect){
-         return
-       }
+      if (!isFormCorrect) {
+        return;
+      }
       this.clearErrors();
       let user = {
         email: this.info.email,

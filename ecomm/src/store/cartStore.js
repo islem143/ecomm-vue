@@ -2,24 +2,24 @@ import axios from "../http";
 const cartStore = {
   namespaced: true,
   state: {
-    cart: {
+  
       products: [],
-    },
+  
   },
   getters: {
     getQuantity(state){
          return (id)=>{
-           return state.cart.products.find(p=>p.id==id)
+           return state.products.find(p=>p.id==id)
          }
     },
     totalItems(state) {
-      return state.cart.products.length?state.cart.products.length:"0";
+      return state.products.length?state.products.length:"0";
     },
-    products(state){
-       return state.cart.products;
+    getProducts(state){
+       return state.products;
     },
     totalPrice(state) {
-      let prices = state.cart.products.map((p) => p.total);
+      let prices = state.products.map((p) => p.total);
 
       let total = prices.reduce((start, p) => {
         return start + p;
@@ -29,58 +29,54 @@ const cartStore = {
   },
   mutations: {
     clearCart(state){
-     state.cart={products:[]}
+     state.products=[]
     },
     setProducts(state, products) {
-      state.cart.products = products;
+      state.products = products;
     },
     updateProduct(state, product) {
-      let productIndex = state.cart.products.findIndex(
+      let productIndex = state.products.findIndex(
         (p) => p.id == product.id
       );
       if (productIndex != -1) {
         let updatedProductQuantity =
           product.type == "increment"
-            ? state.cart.products[productIndex].quantity + 1
-            : state.cart.products[productIndex].quantity - 1;
-        state.cart.products[productIndex].quantity = updatedProductQuantity;
-        state.cart.products[productIndex].total =
-          updatedProductQuantity * state.cart.products[productIndex].price;
+            ? state.products[productIndex].quantity + 1
+            : state.products[productIndex].quantity - 1;
+        state.products[productIndex].quantity = updatedProductQuantity;
+        state.products[productIndex].total =
+          updatedProductQuantity * state.products[productIndex].price;
 
         return;
       }
     },
     addProduct(state, product) {
    
-      let productIndex = state.cart.products.findIndex(
+      let productIndex = state.products.findIndex(
         (p) => p.id == product.id
       );
       if (productIndex != -1) {
-        state.cart.products[productIndex].total = state.cart.products[
+        state.products[productIndex].total = state.products[
           productIndex
         ].quantity++;
-        state.cart.products[productIndex].total =
-          product.price * state.cart.products[productIndex].quantity;
+        state.products[productIndex].total =
+          product.price * state.products[productIndex].quantity;
 
         return;
       }
       product.quantity = 1;
       product.total = product.price;
-      state.cart.products.push(product);
+      state.products.push(product);
     },
     removeProduct(state, product) {
-      let productIndex = state.cart.products.findIndex(
+      let productIndex = state.products.findIndex(
         (p) => p.id == product.id
       );
       if (productIndex != -1) {
-        state.cart.products.splice(productIndex, 1);
+        state.products.splice(productIndex, 1);
       }
     },
-    clearCart(state){
-      state.cart={
-        products:[]
-      }
-    }
+    
   },
 
   actions: {

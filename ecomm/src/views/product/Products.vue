@@ -176,8 +176,14 @@ export default {
   },
   methods: {
     addToCart(product) {
-      console.log(product.id);
-      store.dispatch("cart/addCartItem", product);
+      store.dispatch("cart/addCartItem", product).then(() => {
+        this.$toast.add({
+          severity: "success",
+          summary: "Success Message",
+          detail: "Cart Item Added",
+          life: 1000,
+        });
+      });
     },
     productDetail(id) {
       this.$router.push("/product/" + id);

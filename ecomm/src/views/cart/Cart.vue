@@ -8,7 +8,7 @@
             Total Amount:
             <b>{{ totalPrice }} $</b>
           </p>
-          <Button label="Precced To Checkout" />
+          <Button @click="handleCheckout" label="Precced To Checkout" />
         </div>
       </div>
     </main>

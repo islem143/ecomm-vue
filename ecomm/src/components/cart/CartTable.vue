@@ -13,21 +13,14 @@
       >
         <Column header="Image">
           <template #body="slotProps">
-
             <img
-               :src="'http://localhost:8081/storage/' + slotProps.data.img_url"
-          
+              :src="'http://localhost:8081/storage/' + slotProps.data.img_url"
               class="product-image"
             />
           </template>
         </Column>
         <Column field="name" header="Name" style="min-width: 8rem"></Column>
-        <Column
-          field="price"
-          header="Price"
-   
-          style="min-width: 8rem"
-        >
+        <Column field="price" header="Price" style="min-width: 8rem">
           <template #body="slotProps">
             {{ formatCurrency(slotProps.data.price) }}
           </template>
@@ -45,13 +38,13 @@
               <div>
                 <Button
                   class="p-button-rounded p-button-success mr-2"
-                  @click="editProduct(slotProps.data)"
+                  @click="increaseQuantity(slotProps.data)"
                   >+</Button
                 >
                 <Button
                   icon="pi pi-trash"
                   class="p-button-rounded p-button-warning"
-                  @click="confirmDeleteProduct(slotProps.data)"
+                  @click="decreaseQuantity(slotProps.data)"
                   >-</Button
                 >
               </div>
@@ -152,6 +145,7 @@
         />
       </template>
     </Dialog>
+    
   </div>
 </template>
 
@@ -159,17 +153,15 @@
 
 <script>
 import { FilterMatchMode } from "primevue/api";
-import axios from "../../http";
-
 import store from "../../store/store";
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "CartTable",
   components: {},
   data() {
     return {
-      products: [],
+      //products: [],
       productDialog: false,
       deleteProductDialog: false,
       deleteProductsDialog: false,
@@ -185,32 +177,29 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("cart", ["products"]),
+    ...mapState("cart", ["products"]),
+    
+
   },
   created() {
     this.initFilters();
-    store.dispatch("cart/getCartItems").then((res) => {
-      this.products = res;
-    });
+    store.dispatch("cart/getCartItems")
   },
   methods: {
-    es() {
-      console.log("s");
-    },
+  
     handleCheckout() {
       this.$router.push("/orders");
     },
     increaseQuantity(product) {
       let info = { id: product.id, type: "increment" };
-      store.dispatch("cart/changeQuantity", info).then((res) => {
-        console.log(res);
-      });
+      store.dispatch("cart/changeQuantity", info)
+       
     },
     decreaseQuantity(product) {
       let info = { id: product.id, type: "decrement" };
-      store.dispatch("cart/changeQuantity", info).then((res) => {
-        console.log(res);
-      });
+      store.dispatch("cart/changeQuantity", info)
+        
+      
     },
     formatCurrency(value) {
       if (value)
@@ -273,6 +262,7 @@ export default {
       this.deleteProductDialog = true;
     },
     deleteProduct() {
+        store.dispatch("cart/deleteCartItem", this.product)
       this.products = this.products.filter((val) => val.id !== this.product.id);
       this.deleteProductDialog = false;
       this.product = {};
@@ -283,17 +273,7 @@ export default {
         life: 3000,
       });
     },
-    findIndexById(id) {
-      let index = -1;
-      for (let i = 0; i < this.products.length; i++) {
-        if (this.products[i].id === id) {
-          index = i;
-          break;
-        }
-      }
 
-      return index;
-    },
     createId() {
       let id = "";
       var chars =
@@ -303,9 +283,7 @@ export default {
       }
       return id;
     },
-    exportCSV() {
-      this.$refs.dt.exportCSV();
-    },
+
     confirmDeleteSelected() {
       this.deleteProductsDialog = true;
     },
